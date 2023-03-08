@@ -7,5 +7,14 @@
     "code": "0",
     "stock": "20",
     "id": 1
+  },
+  {
+    "title": "Pimienta",
+    "description": "Negra",
+    "price": "600$",
+    "thumbnail": "",
+    "code": "2",
+    "stock": "7",
+    "id": 3
   }
 ]
