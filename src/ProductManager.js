@@ -1,8 +1,9 @@
 import fs from 'fs/promises'
 import { Product } from './Product.js'
+export { ProductManager }
 
 
-export class ProductManager {
+ class ProductManager {
     #products
     #ruta
 
@@ -11,6 +12,7 @@ export class ProductManager {
         this.#products = []
         this.nextId = 1
     }
+    
 
     async #leer() {
         const json = await fs.readFile(this.#ruta, 'utf-8')
@@ -80,8 +82,20 @@ export class ProductManager {
         await this.#escribir()
     }
 
+    async guardarProduct(product){
+        await this.#leer()
+        this.#products.push(product)
+        await this.#escribir()
+        return product
+    }
+
+
+
+    
+
     async reset() {
         this.#products = []
         await this.#escribir()
     }
 }
+
