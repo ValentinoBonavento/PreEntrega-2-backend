@@ -16,5 +16,23 @@
     "code": "2",
     "stock": "7",
     "id": 3
+  },
+  {
+    "title": "agua",
+    "description": "mineral",
+    "price": "200$",
+    "thumbnail": "",
+    "code": "0",
+    "stock": "1",
+    "id": 4
+  },
+  {
+    "title": "coca",
+    "description": "cola",
+    "price": "250$",
+    "thumbnail": "",
+    "code": "0",
+    "stock": "3",
+    "id": 5
   }
 ]

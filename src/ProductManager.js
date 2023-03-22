@@ -24,6 +24,11 @@ export { ProductManager }
         await fs.writeFile(this.#ruta, nuevoJson)
     }
 
+    async buscarProduct() {
+        await this.#leer()
+        return this.#products
+    }
+
     async crearProducto({ title, description, price, thumbnail, code, stock }) {
         await this.#leer()
 

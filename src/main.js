@@ -4,6 +4,8 @@ import express from 'express'
 import fs from 'fs'
 import { Product } from './Product.js'
 import { randomUUID } from 'crypto'
+import { engine } from 'express-handlebars'
+import { Server as SocketIOServer } from 'socket.io'
 
 
 
@@ -119,7 +121,7 @@ app.put('/products/:pid', async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
-
+    
     try {
         const productReemplazada = await um.actualizarProductoId(parseInt(req.params.pid), productNuevo)
         res.json(productReemplazada)
@@ -137,5 +139,43 @@ app.delete('/products/:pid', async (req, res) => {
         res.status(404).json({ message: error.message })
     }
 })
+app.engine('handlebars', engine())
+app.set('views', './views')
+app.set('view engine', 'handlebars')
 
+app.use(express.static('./public'))
 const server = app.listen(8080)
+const io = new SocketIOServer(server)
+
+io.on('connection', async clientSocket => {
+    
+
+    
+    clientSocket.on('nuevoProduct', async product => {
+        
+        await um.buscarProduct(product)
+        const products = await um.buscarProduct()
+        const productsParaFront = products.map(product => product.title)
+        io.sockets.emit('actualizarProducts', productsParaFront)
+    })
+
+    const products = await um.buscarProduct()
+    const productsParaFront = products.map(product => product.title)
+    
+    io.sockets.emit('actualizarProducts', productsParaFront)
+})
+
+app.get('/realTimeProducts', async (req, res) => {
+    const realTimeProducts = await um.buscarProduct();
+    const productsParaFront = realTimeProducts.map(product => `
+    <li>
+        <div>Title: ${product.title}</div>
+    </li>
+`).join('');
+    console.log(productsParaFront);
+    res.render('realTimeProducts', {
+        pageTitle: 'realTimeProducts',
+        productsList: productsParaFront
+    });
+});
+
