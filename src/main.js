@@ -144,35 +144,33 @@ app.set('views', './views')
 app.set('view engine', 'handlebars')
 
 app.use(express.static('./public'))
+
 const server = app.listen(8080)
+
+
 const io = new SocketIOServer(server)
-
-io.on('connection', async clientSocket => {
+io.on('connection', clientSocket => {
+    console.log("nuevo usuario");
     
-
-    
-    clientSocket.on('nuevoProduct', async product => {
+    //clientSocket.on('nuevoProduct') 
         
-        await um.buscarProduct(product)
-        const products = await um.buscarProduct()
-        const productsParaFront = products.map(product => product.title)
-        io.sockets.emit('actualizarProducts', productsParaFront)
-    })
+   // const products = await um.buscarProduct()
+    //const productsParaFront = products.map(product => product.title)
+   // console.log(productsParaFront)
+   // io.sockets.emit('actualizarProducts', productsParaFront)
+   // console.log(productsParaFront);
 
-    const products = await um.buscarProduct()
-    const productsParaFront = products.map(product => product.title)
+//serverSocket.emit('actualizarProducts', await um.buscarProduct() )
     
-    io.sockets.emit('actualizarProducts', productsParaFront)
+    
 })
-
-app.get('/realTimeProducts', async (req, res) => {
+app.get('/', async (req, res) => {
     const realTimeProducts = await um.buscarProduct();
     const productsParaFront = realTimeProducts.map(product => `
     <li>
         <div>Title: ${product.title}</div>
     </li>
 `).join('');
-    console.log(productsParaFront);
     res.render('realTimeProducts', {
         pageTitle: 'realTimeProducts',
         productsList: productsParaFront

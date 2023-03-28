@@ -1,11 +1,18 @@
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+</head>
 <h1>Productos</h1>
 
-
+<div id="products"></div>
 
 <body>
     <h1>{{pageTitle}}</h1>
+    
     <ul>
         {{{productsList}}}
     </ul>
 </body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
 

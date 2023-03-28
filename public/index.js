@@ -1,4 +1,4 @@
-const serverSocket = io();
+const serverSocket = io('http://localhost:8080');
 
 const plantillaProducts = `
 {{#if hayProductos}}
@@ -14,12 +14,14 @@ const plantillaProducts = `
 
 const armarHtmlProductos = Handlebars.compile(plantillaProducts);
 
-serverSocket.on('actualizarProducts', (productos) => {
-  const divProductos = document.querySelector('#products');
-  if (divProductos) {
-    divProductos.innerHTML = armarHtmlProductos({
-      productos,
-      hayProductos: productos.length > 0,
+serverSocket.on('actualizarProducts', products => {
+  const ulProductos = document.querySelector('#products');
+  if (ulProductos) {
+    ulProductos.innerHTML = armarHtmlProductos({
+      hayProductos: products.length > 0,
+      productos: products
     });
   }
 });
+
+
