@@ -1,10 +1,13 @@
-const serverSocket = io('http://localhost:8080');
+const serverSocket = io(); 
+
+import { ProductManager } from "../src/ProductManager";
+const um = new ProductManager("./database/products.json");
 
 const plantillaProducts = `
 {{#if hayProductos}}
   <ul>
     {{#each productos}}
-      <li>({{this.name}}) {{this.description}}: {{this.id}}</li>
+      <li>({{this.title}}) {{this.description}}: {{this.id}}</li>
     {{/each}}
   </ul>
 {{else}}
@@ -14,14 +17,9 @@ const plantillaProducts = `
 
 const armarHtmlProductos = Handlebars.compile(plantillaProducts);
 
-serverSocket.on('actualizarProducts', products => {
-  const ulProductos = document.querySelector('#products');
-  if (ulProductos) {
-    ulProductos.innerHTML = armarHtmlProductos({
-      hayProductos: products.length > 0,
-      productos: products
-    });
-  }
+serverSocket.on("actualizarProdcutos", products => {
+    const ulProductos = document.querySelector("#products");
+    if (ulProductos) {
+       ulProductos.innerHTML = JSON.stringify(products)
+    }
 });
-
-

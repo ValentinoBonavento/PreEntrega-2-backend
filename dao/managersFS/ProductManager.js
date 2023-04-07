@@ -1,5 +1,5 @@
 import fs from 'fs/promises'
-import { Product } from './Product.js'
+import { Product } from '../../src/Product.js'
 export { ProductManager }
 
 
@@ -12,7 +12,6 @@ export { ProductManager }
         this.#products = []
         this.nextId = 1
     }
-    
 
     async #leer() {
         const json = await fs.readFile(this.#ruta, 'utf-8')
