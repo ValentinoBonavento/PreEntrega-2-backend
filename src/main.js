@@ -6,7 +6,7 @@ import { Product } from "./Product.js";
 import { randomUUID } from "crypto";
 import { engine } from "express-handlebars";
 import { Server as SocketIOServer } from "socket.io";
-import { title } from "process";
+import { productManagerDB } from "../dao/managersDB/ProductManagerDB.js";
 
 const um = new ProductManager("./database/products.json");
 const um1 = new CartManager("./database/carts.json");
@@ -178,3 +178,13 @@ app.get("/", async (req, res) => {
         productsList: productsParaFront,
     });
 });
+
+app.get("/productsdb", async (req, res, next) =>{
+    const products = await productManagerDB.obtenerTodos()
+    
+    res.render('productsDB', {
+        pageTitle: 'ProductsDB',
+        hayProducts: productManagerDB.length > 0,
+        products
+    })
+})

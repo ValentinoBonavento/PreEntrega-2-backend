@@ -3,7 +3,7 @@ import { Router } from 'express'
 
 export const routerVistas = Router();
 
-routerVistas.get('/productsDB', async (req, res, next) =>{
+routerVistas.get("/productsdb", async (req, res, next) =>{
     const products = await productManagerDB.obtenerTodos()
     
     res.render('productsDB', {
